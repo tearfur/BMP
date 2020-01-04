@@ -6,7 +6,7 @@
 #include <iostream>
 #include <cstddef>
 
-BMP_24bit::BMP_24bit(const std::string& filename): BMP(filename), red(this), green(this), blue(this) {
+BMP_24bit::BMP_24bit(const std::string& filename): BMP(filename), red_accessor(this), green_accessor(this), blue_accessor(this) {
 	if (infoHeader.biBitCount != 24) {
 		std::cerr << "BMP_24bit: This is not a 24-bit BMP file." << std::endl;
 		std::exit(1);
@@ -45,8 +45,8 @@ BMP_24bit::BMP_24bit(const std::string& filename): BMP(filename), red(this), gre
 }
 
 BMP_24bit::BMP_24bit(const int32_t& w, const int32_t& h, const uint32_t& background):
-		BMP(w, h), img(w * std::abs(h), background < 1u << 24u ? background : (1u << 24u) - 1), red(this),
-		green(this), blue(this) {
+		BMP(w, h), img(w * std::abs(h), background < 1u << 24u ? background : (1u << 24u) - 1), red_accessor(this),
+		green_accessor(this), blue_accessor(this) {
 	// Fill in header values
 	infoHeader.biBitCount = 24;
 	infoHeader.biClrUsed = 0;
@@ -149,12 +149,12 @@ uint8_t BMP_24bit::Red::operator()(const uint32_t& x, const uint32_t& y) const {
 	return operator[](ptr->getIndex(x, y));
 }
 
-uint8_t BMP_24bit::Red::operator=(const uint8_t& value) {
+BMP_24bit::Red& BMP_24bit::Red::operator=(const uint8_t& value) {
 	(*ptr)[index] <<= 8u;
 	(*ptr)[index] >>= 8u; // Clear the red bits
 	(*ptr)[index] |= value << 16u;
 
-	return value;
+	return *this;
 }
 
 BMP_24bit::Red::operator uint8_t() const {
@@ -196,11 +196,11 @@ uint8_t BMP_24bit::Green::operator()(const uint32_t& x, const uint32_t& y) const
 	return operator[](ptr->getIndex(x, y));
 }
 
-uint8_t BMP_24bit::Green::operator=(const uint8_t& value) {
+BMP_24bit::Green& BMP_24bit::Green::operator=(const uint8_t& value) {
 	(*ptr)[index] &= 0xFF00FFu; // Clear green bits
 	(*ptr)[index] |= value << 8u;
 
-	return value;
+	return *this;
 }
 
 BMP_24bit::Green::operator uint8_t() const {
@@ -242,12 +242,12 @@ uint8_t BMP_24bit::Blue::operator()(const uint32_t& x, const uint32_t& y) const 
 	return operator[](ptr->getIndex(x, y));
 }
 
-uint8_t BMP_24bit::Blue::operator=(const uint8_t& value) {
+BMP_24bit::Blue& BMP_24bit::Blue::operator=(const uint8_t& value) {
 	(*ptr)[index] >>= 8u;
 	(*ptr)[index] <<= 8u; // Clear blue bits
 	(*ptr)[index] |= value;
 
-	return value;
+	return *this;
 }
 
 BMP_24bit::Blue::operator uint8_t() const {
@@ -260,4 +260,52 @@ uint8_t BMP_24bit::Blue::getValue() const {
 
 uint8_t BMP_24bit::Blue::getValue(const uint32_t& index) const {
 	return (*ptr)[index] & 0xFFu;
+}
+
+BMP_24bit::Red& BMP_24bit::red(const std::size_t& index) {
+	return red_accessor[index];
+}
+
+uint8_t BMP_24bit::red(const std::size_t& index) const {
+	return red_accessor[index];
+}
+
+BMP_24bit::Red& BMP_24bit::red(const uint32_t& x, const uint32_t& y) {
+	return red_accessor(x, y);
+}
+
+uint8_t BMP_24bit::red(const uint32_t& x, const uint32_t& y) const {
+	return red_accessor(x, y);
+}
+
+BMP_24bit::Green& BMP_24bit::green(const std::size_t& index) {
+	return green_accessor[index];
+}
+
+uint8_t BMP_24bit::green(const std::size_t& index) const {
+	return green_accessor[index];
+}
+
+BMP_24bit::Green& BMP_24bit::green(const uint32_t& x, const uint32_t& y) {
+	return green_accessor(x, y);
+}
+
+uint8_t BMP_24bit::green(const uint32_t& x, const uint32_t& y) const {
+	return green_accessor(x, y);
+}
+
+BMP_24bit::Blue& BMP_24bit::blue(const std::size_t& index) {
+	return blue_accessor[index];
+}
+
+uint8_t BMP_24bit::blue(const std::size_t& index) const {
+	return blue_accessor[index];
+}
+
+BMP_24bit::Blue& BMP_24bit::blue(const uint32_t& x, const uint32_t& y) {
+	return blue_accessor(x, y);
+}
+
+uint8_t BMP_24bit::blue(const uint32_t & x, const uint32_t & y) const {
+	return blue_accessor(x, y);
 }

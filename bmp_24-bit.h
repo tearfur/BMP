@@ -65,14 +65,6 @@ class BMP_24bit: public BMP {
 		const uint32_t& operator()(const uint32_t& x, const uint32_t& y) const;
 		///@}
 
-		/**
-		 * \brief Assignment operator.
-		 *
-		 * @param n[in] To be copied to the this
-		 * @return Reference to this
-		 */
-		BMP_24bit& operator=(const BMP_24bit& n) = default;
-
 		/// Size in bytes for 1 pixel
 		static const uint8_t pixel_size = 3;
 
@@ -96,17 +88,18 @@ class BMP_24bit: public BMP {
 				explicit Accessor(BMP_24bit* const& ptr);
 
 				/// Pointer to parent.
-				BMP_24bit* ptr;
+				BMP_24bit* const ptr;
 
 				/// The img index this accessor is currently bound to.
 				std::size_t index;
 		};
 
-	public:
 		/// Red accessor
 		class Red: public Accessor {
-				friend class BMP_24bit;
 			public:
+				/// Constructor, accepts ptr to parent
+				explicit Red(BMP_24bit* const& ptr);
+
 				///@{
 				/**
 				 * \brief Modifies index and returns a reference to *this in order to be used in conjunction with operator=().
@@ -147,9 +140,9 @@ class BMP_24bit: public BMP {
 				 * \brief Sets the red value of the pixel at index to value.
 				 *
 				 * @param value[in] New red value
-				 * @return value
+				 * @return *this
 				 */
-				uint8_t operator=(const uint8_t& value);
+				Red& operator=(const uint8_t& value);
 
 				/**
 				 * \brief Conversion operator.
@@ -159,20 +152,19 @@ class BMP_24bit: public BMP {
 				operator uint8_t() const;
 
 			private:
-				/// Constructor, accepts ptr to parent
-				explicit Red(BMP_24bit* const& ptr);
-
 				/// @{
 				/// Get red value
 				uint8_t getValue() const;
 				uint8_t getValue(const uint32_t& index) const;
 				/// @}
-		} red;
+		} red_accessor;
 
 		/// Green accessor
 		class Green: public Accessor {
-				friend class BMP_24bit;
 			public:
+				/// Constructor, accepts ptr to parent
+				explicit Green(BMP_24bit* const& ptr);
+
 				///@{
 				/**
 				 * \brief Modifies index and returns a reference to *this in order to be used in conjunction with operator=()
@@ -213,9 +205,9 @@ class BMP_24bit: public BMP {
 				 * \brief Sets the green value of the pixel at index to value.
 				 *
 				 * @param value[in] New green value
-				 * @return value
+				 * @return *this
 				 */
-				uint8_t operator=(const uint8_t& value);
+				Green& operator=(const uint8_t& value);
 
 				/**
 				 * \brief Conversion operator.
@@ -225,19 +217,18 @@ class BMP_24bit: public BMP {
 				operator uint8_t() const;
 
 			private:
-				/// Constructor, accepts ptr to parent
-				explicit Green(BMP_24bit* const& ptr);
-
 				/// @{
 				/// Get green value
 				uint8_t getValue() const;
 				uint8_t getValue(const uint32_t& index) const;
 				/// @}
-		} green;
+		} green_accessor;
 
 		class Blue: public Accessor {
-				friend class BMP_24bit;
 			public:
+				/// Constructor, accepts ptr to parent
+				explicit Blue(BMP_24bit* const& ptr);
+
 				///@{
 				/**
 				 * \brief Modifies index and returns a reference to *this in order to be used in conjunction with operator=()
@@ -278,9 +269,9 @@ class BMP_24bit: public BMP {
 				 * \brief Sets the blue value of the pixel at index to value.
 				 *
 				 * @param value[in] New blue value
-				 * @return value
+				 * @return *this
 				 */
-				uint8_t operator=(const uint8_t& value);
+				Blue& operator=(const uint8_t& value);
 
 				/**
 				 * \brief Conversion operator.
@@ -290,15 +281,37 @@ class BMP_24bit: public BMP {
 				operator uint8_t() const;
 
 			private:
-				/// Constructor, accepts ptr to parent
-				explicit Blue(BMP_24bit* const& ptr);
-
 				/// @{
 				/// Get green value
 				uint8_t getValue() const;
 				uint8_t getValue(const uint32_t& index) const;
 				/// @}
-		} blue;
+		} blue_accessor;
+		///@}
+
+	public:
+		/**
+		 * @{
+		 *
+		 * @brief Wrapper functions for accessors
+		 */
+		Red& red(const std::size_t& index);
+		uint8_t red(const std::size_t& index) const;
+
+		Red& red(const uint32_t& x, const uint32_t& y);
+		uint8_t red(const uint32_t& x, const uint32_t& y) const;
+
+		Green& green(const std::size_t& index);
+		uint8_t green(const std::size_t& index) const;
+
+		Green& green(const uint32_t& x, const uint32_t& y);
+		uint8_t green(const uint32_t& x, const uint32_t& y) const;
+
+		Blue& blue(const std::size_t& index);
+		uint8_t blue(const std::size_t& index) const;
+
+		Blue& blue(const uint32_t& x, const uint32_t& y);
+		uint8_t blue(const uint32_t& x, const uint32_t& y) const;
 		///@}
 };
 
