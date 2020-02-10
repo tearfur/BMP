@@ -113,7 +113,7 @@ bool BMP_1bit::save(const std::string& filename) const {
 				if (remainder == 7 || x == infoHeader.biWidth - 1) f.write(reinterpret_cast<char*>(&buf), sizeof(buf));
 			}
 
-			f.seekp(padSize, std::ios::cur); // Skip padding
+			for (std::size_t i = 0; i < padSize; ++i) f.put(0); // Skip padding
 		}
 	} else {
 		for (std::size_t y = infoHeader.biHeight - 1; y < infoHeader.biHeight; --y) {
@@ -127,7 +127,7 @@ bool BMP_1bit::save(const std::string& filename) const {
 				if (remainder == 7 || x == infoHeader.biWidth - 1) f.write(reinterpret_cast<char*>(&buf), sizeof(buf));
 			}
 
-			f.seekp(padSize, std::ios::cur); // Skip padding
+			for (std::size_t i = 0; i < padSize; ++i) f.put(0); // Skip padding
 		}
 	}
 

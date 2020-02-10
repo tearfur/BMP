@@ -52,12 +52,6 @@ class BMP {
 		/// Returns the index for a certain x, y.
 		std::size_t getIndex(const uint32_t& x, const uint32_t& y) const;
 
-		///@{
-		/// Check for valid img index
-		bool validIndex(const std::size_t& index) const;
-		bool validIndex(const uint32_t& x, const uint32_t& y) const;
-		///@}
-
 		/// Assert: Invalid img index
 		void assertInvalidIndex() const;
 
@@ -74,18 +68,16 @@ class BMP {
 		 */
 		BMP();
 
-	protected:
+	public:
 #pragma pack(push, 1)
-		/// BITMAPFILEHEADER
-		struct {
+		struct FileHeader {
 			uint16_t bfType;
 			uint32_t bfSize;
 			uint16_t bfReserved1, bfReserved2;
 			uint32_t bfOffBits;
-		} fileHeader;
+		};
 
-		///BITMAPINFOHEADER
-		struct {
+		struct InfoHeader {
 			uint32_t biSize;
 			int32_t biWidth;
 			int32_t biHeight; // Flipped row-order if negative
@@ -96,8 +88,36 @@ class BMP {
 			int32_t biXPelsPerMeter, biYPelsPerMeter;
 			uint32_t biClrUsed;
 			uint32_t biClrImportant;
-		} infoHeader;
+		};
 #pragma pack(pop)
+
+	protected:
+		/// BITMAPFILEHEADER
+		FileHeader fileHeader;
+
+		///BITMAPINFOHEADER
+		InfoHeader infoHeader;
+
+	public:
+		/**
+		 * @brief Accessor function to get the bitmap file header
+		 *
+		 * @return Constant reference to the file header
+		 */
+		const FileHeader& getFileHeader() const;
+
+		/**
+		 * @brief Accessor function to get the bitmap info header
+		 *
+		 * @return Constant reference to the info header
+		 */
+		const InfoHeader& getInfoHeader() const;
+
+		///@{
+		/// Check for valid img index
+		bool validIndex(const std::size_t& index) const;
+		bool validIndex(const uint32_t& x, const uint32_t& y) const;
+		///@}
 };
 
 #endif //BMP_BMP_H

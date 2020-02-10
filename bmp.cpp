@@ -84,3 +84,11 @@ bool BMP::validIndex(const uint32_t& x, const uint32_t& y) const {
 void BMP::assertInvalidIndex() const {
 	std::cerr << "BMP: Index out of bounds" << std::endl;
 }
+
+const BMP::FileHeader& BMP::getFileHeader() const {
+	return fileHeader;
+}
+
+const BMP::InfoHeader& BMP::getInfoHeader() const {
+	return infoHeader;
+}

@@ -89,7 +89,7 @@ bool BMP_32bit::save(const std::string& filename) const {
 				f.write(reinterpret_cast<const char*>(&operator()(x, y)), sizeof(uint32_t));
 			}
 
-			f.seekp(padSize, std::ios::cur);
+			for (std::size_t i = 0; i < padSize; ++i) f.put(0);
 		}
 	} else {
 		for (std::size_t y = infoHeader.biHeight - 1; y < infoHeader.biHeight; --y) {
@@ -97,7 +97,7 @@ bool BMP_32bit::save(const std::string& filename) const {
 				f.write(reinterpret_cast<const char*>(&operator()(x, y)), sizeof(uint32_t));
 			}
 
-			f.seekp(padSize, std::ios::cur);
+			for (std::size_t i = 0; i < padSize; ++i) f.put(0);
 		}
 	}
 

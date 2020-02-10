@@ -38,7 +38,7 @@ BMP_8bit::BMP_8bit(const std::string& filename): BMP_CT(filename) {
 
 		for (std::size_t y = 0; y < -infoHeader.biHeight; ++y) {
 			for (std::size_t x = 0; x < infoHeader.biWidth; ++x) {
-				f.read(reinterpret_cast<char*>(&operator()(x, y)), sizeof(uint8_t));
+				operator()(x, y) = f.get();
 			}
 
 			f.seekg(padSize, std::ios::cur);
@@ -48,7 +48,7 @@ BMP_8bit::BMP_8bit(const std::string& filename): BMP_CT(filename) {
 
 		for (std::size_t y = infoHeader.biHeight - 1; y < infoHeader.biHeight; --y) {
 			for (std::size_t x = 0; x < infoHeader.biWidth; ++x) {
-				f.read(reinterpret_cast<char*>(&operator()(x, y)), sizeof(uint8_t));
+				operator()(x, y) = f.get();
 			}
 
 			f.seekg(padSize, std::ios::cur);
@@ -97,7 +97,7 @@ bool BMP_8bit::save(const std::string& filename) const {
 				f.write(reinterpret_cast<const char*>(&operator()(x, y)), sizeof(uint8_t));
 			}
 
-			f.seekp(padSize, std::ios::cur);
+			for (std::size_t i = 0; i < padSize; ++i) f.put(0);
 		}
 	} else {
 		for (std::size_t y = infoHeader.biHeight - 1; y < infoHeader.biHeight; --y) {
@@ -105,7 +105,7 @@ bool BMP_8bit::save(const std::string& filename) const {
 				f.write(reinterpret_cast<const char*>(&operator()(x, y)), sizeof(uint8_t));
 			}
 
-			f.seekp(padSize, std::ios::cur);
+			for (std::size_t i = 0; i < padSize; ++i) f.put(0);
 		}
 	}
 

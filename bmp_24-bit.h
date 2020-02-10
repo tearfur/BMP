@@ -30,7 +30,7 @@ class BMP_24bit: public BMP {
 		 *
 		 * @param x[in] Width, positive only
 		 * @param y[in] Height, negative value means flipped row-order
-		 * @param background[in] 0 - 2^24-1, RGB888 value
+		 * @param background[in] 0 - 0xFFFFFF, RGB888 value
 		 */
 		BMP_24bit(const int32_t& w, const int32_t& h, const uint32_t& background = 0);
 
