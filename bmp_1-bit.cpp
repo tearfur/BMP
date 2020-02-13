@@ -3,7 +3,6 @@
 //
 
 #include "bmp_1-bit.h"
-#include "bmp.h"
 #include <fstream>
 #include <cstddef>
 #include <cstdlib>
@@ -15,16 +14,17 @@ BMP_1bit::BMP_1bit(const std::string& filename): BMP_CT(filename) {
 	}
 
 	// Ensure the colour table is valid
-	const uint32_t colourTableSize = fileHeader.bfOffBits - sizeof(fileHeader) - infoHeader.biSize;
-	if (!validColourTableSize(colourTableSize) || colourTableSize > 8) {
-		std::cerr << "BMP_1bit: Invalid colour table." << std::endl;
-		std::exit(1);
-	}
+//	const uint32_t colourTableSize = fileHeader.bfOffBits - sizeof(fileHeader) - infoHeader.biSize;
+//	if (!validColourTableSize(colourTableSize) || colourTableSize > 8) {
+//		std::cerr << "BMP_1bit: Invalid colour table." << std::endl;
+//		std::exit(1);
+//	}
 
 	std::ifstream f(filename, std::ios::binary);
 	f.seekg(sizeof(fileHeader) + infoHeader.biSize); // Seek to colour table
 
 	// Read colour table.
+	const uint32_t colourTableSize = 1u << infoHeader.biBitCount << 2u;
 	colourTable.resize(colourTableSize);
 	f.read(reinterpret_cast<char*>(&colourTable[0]), colourTableSize);
 
@@ -75,7 +75,6 @@ BMP_1bit::BMP_1bit(const int32_t& w, const int32_t& h, bool background): BMP_CT(
 	infoHeader.biBitCount = 1;
 	infoHeader.biClrUsed = 1u << infoHeader.biBitCount;
 	fileHeader.bfOffBits = sizeof(fileHeader) + infoHeader.biSize + (infoHeader.biClrUsed << 2u);
-	while (fileHeader.bfOffBits % 4) ++fileHeader.bfOffBits; // Ensure the image array is aligned to 4-byte word
 	infoHeader.biSizeImage = getRowSize() * std::abs(h);
 	fileHeader.bfSize = fileHeader.bfOffBits + infoHeader.biSizeImage;
 

@@ -64,7 +64,6 @@ BMP_32bit::BMP_32bit(const int32_t& w, const int32_t& h, const uint32_t& backgro
 	infoHeader.biBitCount = 32;
 	infoHeader.biClrUsed = 0;
 	fileHeader.bfOffBits = sizeof(fileHeader) + infoHeader.biSize + 3 * sizeof(uint32_t);
-	while (fileHeader.bfOffBits % 4) ++fileHeader.bfOffBits; // Ensure the image array is aligned to 4-byte word
 	infoHeader.biSizeImage = getRowSize() * std::abs(h);
 	fileHeader.bfSize = fileHeader.bfOffBits + infoHeader.biSizeImage;
 }
