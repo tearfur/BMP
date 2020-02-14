@@ -50,7 +50,7 @@ class BMP {
 		bool save(std::ofstream& f) const;
 
 		/// Returns the index for a certain x, y.
-		std::size_t getIndex(const uint32_t& x, const uint32_t& y) const;
+		std::size_t getIndex(const int32_t& x, const int32_t& y) const;
 
 		/// Assert: Invalid img index
 		void assertInvalidIndex() const;
@@ -116,7 +116,7 @@ class BMP {
 		///@{
 		/// Check for valid img index
 		bool validIndex(const std::size_t& index) const;
-		bool validIndex(const uint32_t& x, const uint32_t& y) const;
+		bool validIndex(const int32_t& x, const int32_t& y) const;
 		///@}
 };
 
