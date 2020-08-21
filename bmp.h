@@ -69,7 +69,6 @@ class BMP {
 		BMP();
 
 	public:
-#pragma pack(push, 1)
 		struct FileHeader {
 			uint16_t bfType;
 			uint32_t bfSize;
@@ -89,7 +88,6 @@ class BMP {
 			uint32_t biClrUsed;
 			uint32_t biClrImportant;
 		};
-#pragma pack(pop)
 
 	protected:
 		/// BITMAPFILEHEADER

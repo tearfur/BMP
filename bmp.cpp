@@ -24,8 +24,23 @@ BMP::BMP(const std::string& filename): BMP() {
 	}
 
 	// Read in headers
-	f.read(reinterpret_cast<char*>(&fileHeader), sizeof(fileHeader));
-	f.read(reinterpret_cast<char*>(&infoHeader), sizeof(infoHeader));
+	f.read(reinterpret_cast<char*>(&fileHeader.bfType), sizeof(fileHeader.bfType));
+	f.read(reinterpret_cast<char*>(&fileHeader.bfSize), sizeof(fileHeader.bfSize));
+	f.read(reinterpret_cast<char*>(&fileHeader.bfReserved1), sizeof(fileHeader.bfReserved1));
+	f.read(reinterpret_cast<char*>(&fileHeader.bfReserved2), sizeof(fileHeader.bfReserved2));
+	f.read(reinterpret_cast<char*>(&fileHeader.bfOffBits), sizeof(fileHeader.bfOffBits));
+
+	f.read(reinterpret_cast<char*>(&infoHeader.biSize), sizeof(infoHeader.biSize));
+	f.read(reinterpret_cast<char*>(&infoHeader.biWidth), sizeof(infoHeader.biWidth));
+	f.read(reinterpret_cast<char*>(&infoHeader.biHeight), sizeof(infoHeader.biHeight));
+	f.read(reinterpret_cast<char*>(&infoHeader.biPlanes), sizeof(infoHeader.biPlanes));
+	f.read(reinterpret_cast<char*>(&infoHeader.biBitCount), sizeof(infoHeader.biBitCount));
+	f.read(reinterpret_cast<char*>(&infoHeader.biCompression), sizeof(infoHeader.biCompression));
+	f.read(reinterpret_cast<char*>(&infoHeader.biSizeImage), sizeof(infoHeader.biSizeImage));
+	f.read(reinterpret_cast<char*>(&infoHeader.biXPelsPerMeter), sizeof(infoHeader.biXPelsPerMeter));
+	f.read(reinterpret_cast<char*>(&infoHeader.biYPelsPerMeter), sizeof(infoHeader.biYPelsPerMeter));
+	f.read(reinterpret_cast<char*>(&infoHeader.biClrUsed), sizeof(infoHeader.biClrUsed));
+	f.read(reinterpret_cast<char*>(&infoHeader.biClrImportant), sizeof(infoHeader.biClrImportant));
 
 	// Check if the format is supported
 	if (fileHeader.bfType != BM || infoHeader.biSize != 40) {
@@ -59,8 +74,23 @@ bool BMP::save(std::ofstream& f) const {
 	}
 
 	// Write headers
-	f.write(reinterpret_cast<const char*>(&fileHeader), sizeof(fileHeader));
-	f.write(reinterpret_cast<const char*>(&infoHeader), sizeof(infoHeader));
+	f.write(reinterpret_cast<const char*>(&fileHeader.bfType), sizeof(fileHeader.bfType));
+	f.write(reinterpret_cast<const char*>(&fileHeader.bfSize), sizeof(fileHeader.bfSize));
+	f.write(reinterpret_cast<const char*>(&fileHeader.bfReserved1), sizeof(fileHeader.bfReserved1));
+	f.write(reinterpret_cast<const char*>(&fileHeader.bfReserved2), sizeof(fileHeader.bfReserved2));
+	f.write(reinterpret_cast<const char*>(&fileHeader.bfOffBits), sizeof(fileHeader.bfOffBits));
+
+	f.write(reinterpret_cast<const char*>(&infoHeader.biSize), sizeof(infoHeader.biSize));
+	f.write(reinterpret_cast<const char*>(&infoHeader.biWidth), sizeof(infoHeader.biWidth));
+	f.write(reinterpret_cast<const char*>(&infoHeader.biHeight), sizeof(infoHeader.biHeight));
+	f.write(reinterpret_cast<const char*>(&infoHeader.biPlanes), sizeof(infoHeader.biPlanes));
+	f.write(reinterpret_cast<const char*>(&infoHeader.biBitCount), sizeof(infoHeader.biBitCount));
+	f.write(reinterpret_cast<const char*>(&infoHeader.biCompression), sizeof(infoHeader.biCompression));
+	f.write(reinterpret_cast<const char*>(&infoHeader.biSizeImage), sizeof(infoHeader.biSizeImage));
+	f.write(reinterpret_cast<const char*>(&infoHeader.biXPelsPerMeter), sizeof(infoHeader.biXPelsPerMeter));
+	f.write(reinterpret_cast<const char*>(&infoHeader.biYPelsPerMeter), sizeof(infoHeader.biYPelsPerMeter));
+	f.write(reinterpret_cast<const char*>(&infoHeader.biClrUsed), sizeof(infoHeader.biClrUsed));
+	f.write(reinterpret_cast<const char*>(&infoHeader.biClrImportant), sizeof(infoHeader.biClrImportant));
 
 	return true;
 }
