@@ -1,8 +1,7 @@
-//
+#ifndef BMP_BMP_16_BIT_H//
 // Created by HoYuYat on 8/11/2019.
 //
 
-#ifndef BMP_BMP_16_BIT_H
 #define BMP_BMP_16_BIT_H
 
 #include "bmp_with-bm.h"
@@ -87,6 +86,9 @@ class BMP_16bit: public BMP_BM {
 		static const std::vector<uint32_t> RGB565_bitmask;
 		static const std::vector<uint32_t> RGB555_bitmask;
 		///@}
+
+		/// Size in bytes for 1 pixel
+		static const uint8_t pixel_size = 2;
 
 	private:
 		/// Vector for storing image data, stored in row-order.

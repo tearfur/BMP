@@ -96,10 +96,8 @@ bool BMP::save(std::ofstream& f) const {
 }
 
 std::size_t BMP::getIndex(const int32_t& x, const int32_t& y) const {
-	if (!validIndex(x, y)) {
-		assertInvalidIndex();
-		std::exit(1);
-	}
+	assertInvalidIndex(x, y);
+
 	return y * infoHeader.biWidth + x;
 }
 
@@ -111,7 +109,21 @@ bool BMP::validIndex(const int32_t& x, const int32_t& y) const {
 	return x >= 0 && x < infoHeader.biWidth && y >= 0 && y < std::abs(infoHeader.biHeight);
 }
 
-void BMP::assertInvalidIndex() const {
+void BMP::assertInvalidIndex(const std::size_t& index) const {
+	if (!validIndex(index)) {
+		assertInvalidIndex();
+		std::exit(1);
+	}
+}
+
+void BMP::assertInvalidIndex(const int32_t& x, const int32_t& y) const {
+	if (!validIndex(x, y)) {
+		assertInvalidIndex();
+		std::exit(1);
+	}
+}
+
+void BMP::assertInvalidIndex() {
 	std::cerr << "BMP: Index out of bounds" << std::endl;
 }
 

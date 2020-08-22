@@ -62,8 +62,8 @@ class BMP_8bit: public BMP_CT {
 		 * @param y[in] y
 		 * @return Reference to the element
 		 */
-		uint8_t& operator()(const uint32_t& x, const uint32_t& y);
-		const uint8_t& operator()(const uint32_t& x, const uint32_t& y) const;
+		uint8_t& operator()(const int32_t& x, const int32_t& y);
+		const uint8_t& operator()(const int32_t& x, const int32_t& y) const;
 		///@}
 
 		/**

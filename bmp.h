@@ -18,7 +18,7 @@
  *
  * It only supports the "BM" format.
  *
- * Ensured to be working with GCC, should be working with MSVC too. Does not support polymorphism.
+ * Written for GNU C++11.
  */
 
 /**
@@ -52,8 +52,13 @@ class BMP {
 		/// Returns the index for a certain x, y.
 		std::size_t getIndex(const int32_t& x, const int32_t& y) const;
 
-		/// Assert: Invalid img index
-		void assertInvalidIndex() const;
+		/**
+		 * @{
+		 * @brief Assert: Invalid img index
+		 */
+		void assertInvalidIndex(const std::size_t& index) const;
+		void assertInvalidIndex(const int32_t& x, const int32_t& y) const;
+		///@}
 
 		/// Assignment operator
 		BMP& operator=(const BMP& n) = default;
@@ -68,6 +73,9 @@ class BMP {
 		 */
 		BMP();
 
+		/// Outputs error message for invalid index
+		static void assertInvalidIndex();
+
 	public:
 		struct FileHeader {
 			uint16_t bfType;
@@ -75,6 +83,8 @@ class BMP {
 			uint16_t bfReserved1, bfReserved2;
 			uint32_t bfOffBits;
 		};
+
+		static const std::size_t fileHeaderSize = (16 + 32 + 16 + 16 + 32) / 8;
 
 		struct InfoHeader {
 			uint32_t biSize;

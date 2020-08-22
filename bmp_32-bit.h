@@ -84,6 +84,9 @@ class BMP_32bit: public BMP_BM {
 		static const std::vector<uint32_t> RGB101010_bitmask;
 		///@}
 
+		/// Size in bytes for 1 pixel
+		static const uint8_t pixel_size = 4;
+
 	private:
 		/// Vector for storing image data, stored in row-order.
 		std::vector<uint32_t> img;

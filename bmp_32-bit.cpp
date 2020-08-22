@@ -30,26 +30,19 @@ BMP_32bit::BMP_32bit(const std::string& filename): BMP_BM(filename) {
 
 	f.seekg(fileHeader.bfOffBits); // Seek to pixel array
 
-	const std::size_t& padSize = getRowSize() - infoHeader.biWidth * sizeof(uint32_t); // Size of padding on each row in bytes
+	const std::size_t& padSize = getRowSize() - infoHeader.biWidth * pixel_size; // Size of padding on each row in bytes
 
 	//Read image data into img
+	img.resize(infoHeader.biWidth * std::abs(infoHeader.biHeight));
 	if (infoHeader.biHeight < 0) {
-		img.resize(infoHeader.biWidth * -infoHeader.biHeight);
-
 		for (std::size_t y = 0; y < -infoHeader.biHeight; ++y) {
-			for (std::size_t x = 0; x < infoHeader.biWidth; ++x) {
-				f.read(reinterpret_cast<char*>(&operator()(x, y)), sizeof(uint32_t));
-			}
+			f.read(reinterpret_cast<char*>(&operator()(0, y)), pixel_size * infoHeader.biWidth);
 
 			f.seekg(padSize, std::ios::cur);
 		}
 	} else {
-		img.resize(infoHeader.biWidth * infoHeader.biHeight);
-
 		for (std::size_t y = infoHeader.biHeight - 1; y < infoHeader.biHeight; --y) {
-			for (std::size_t x = 0; x < infoHeader.biWidth; ++x) {
-				f.read(reinterpret_cast<char*>(&operator()(x, y)), sizeof(uint32_t));
-			}
+			f.read(reinterpret_cast<char*>(&operator()(0, y)), pixel_size * infoHeader.biWidth);
 
 			f.seekg(padSize, std::ios::cur);
 		}
@@ -63,7 +56,7 @@ BMP_32bit::BMP_32bit(const int32_t& w, const int32_t& h, const uint32_t& backgro
 	// Fill in header values
 	infoHeader.biBitCount = 32;
 	infoHeader.biClrUsed = 0;
-	fileHeader.bfOffBits = sizeof(fileHeader) + infoHeader.biSize + 3 * sizeof(uint32_t);
+	fileHeader.bfOffBits = fileHeaderSize + infoHeader.biSize + 3 * sizeof(uint32_t);
 	infoHeader.biSizeImage = getRowSize() * std::abs(h);
 	fileHeader.bfSize = fileHeader.bfOffBits + infoHeader.biSizeImage;
 }
@@ -79,22 +72,18 @@ bool BMP_32bit::save(const std::string& filename) const {
 
 	f.seekp(fileHeader.bfOffBits); // Seek to pixel array
 
-	const std::size_t& padSize = getRowSize() - infoHeader.biWidth * sizeof(uint32_t); // Size of padding on each row in bytes
+	const std::size_t& padSize = getRowSize() - infoHeader.biWidth * pixel_size; // Size of padding on each row in bytes
 
 	// Write image data
 	if (infoHeader.biHeight < 0) {
 		for (std::size_t y = 0; y < -infoHeader.biHeight; ++y) {
-			for (std::size_t x = 0; x < infoHeader.biWidth; ++x) {
-				f.write(reinterpret_cast<const char*>(&operator()(x, y)), sizeof(uint32_t));
-			}
+			f.write(reinterpret_cast<const char*>(&operator()(0, y)), pixel_size * infoHeader.biWidth);
 
 			for (std::size_t i = 0; i < padSize; ++i) f.put(0);
 		}
 	} else {
 		for (std::size_t y = infoHeader.biHeight - 1; y < infoHeader.biHeight; --y) {
-			for (std::size_t x = 0; x < infoHeader.biWidth; ++x) {
-				f.write(reinterpret_cast<const char*>(&operator()(x, y)), sizeof(uint32_t));
-			}
+			f.write(reinterpret_cast<const char*>(&operator()(0, y)), pixel_size * infoHeader.biWidth);
 
 			for (std::size_t i = 0; i < padSize; ++i) f.put(0);
 		}
@@ -105,18 +94,14 @@ bool BMP_32bit::save(const std::string& filename) const {
 }
 
 uint32_t& BMP_32bit::operator[](const std::size_t& index) {
-	if (!validIndex(index)) {
-		assertInvalidIndex();
-		std::exit(1);
-	}
+	assertInvalidIndex(index);
+
 	return img[index];
 }
 
 const uint32_t& BMP_32bit::operator[](const std::size_t& index) const {
-	if (!validIndex(index)) {
-		assertInvalidIndex();
-		std::exit(1);
-	}
+	assertInvalidIndex(index);
+
 	return img[index];
 }
 

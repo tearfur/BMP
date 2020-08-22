@@ -17,12 +17,12 @@ BMP_BM::BMP_BM(const std::string& filename): BMP(filename) {
 			std::cerr << "BMP_BM: Invalid bitmasks. For 16-bit, the pixels will be treated as RGB565. For 32-bit, the pixels will be treated as RGB888" << std::endl;
 		};
 
-		if (fileHeader.bfOffBits - sizeof(fileHeader) - infoHeader.biSize != 32 * 3 / 8) invalidBitmask();
+		if (fileHeader.bfOffBits - fileHeaderSize - infoHeader.biSize != 32 * 3 / 8) invalidBitmask();
 		else {
 			// Read bitmask
 			std::vector<uint32_t> temp(3);
 
-			f.seekg(sizeof(fileHeader) + infoHeader.biSize); // Seek to bitmask
+			f.seekg(fileHeaderSize + infoHeader.biSize); // Seek to bitmask
 			f.read(reinterpret_cast<char*>(&temp[0]), sizeof(uint32_t) * 3); // Read bitmask
 
 			// Use input bitmask if valid

@@ -25,23 +25,26 @@ class BMP_CT: public BMP {
 		/// Constructor to delegate to BMP class
 		BMP_CT(const int32_t& w, const int32_t& h);
 
+		/// Read colour table
+		void readClrTable(std::ifstream& f);
+
 		/// Intermediate function to perform some colour table specific operations
 		bool save(std::ofstream& f) const;
 
 		/// Given the current conditions, is this colour table size valid?
-		bool validColourTableSize(const uint32_t& size) const;
+		bool validClrTableSize(const uint32_t& size) const;
 
 		/// Is this brand new colour table size valid?
-		bool validNewColourTableSize(const uint32_t& size) const;
+		bool validNewClrTableSize(const uint32_t& size) const;
 
 		/// Outputs an error message if the current colour table size is invalid
-		void assertInvalidColourTableSize() const;
+		void assertInvalidClrTableSize() const;
 
 		/// Outputs an error message if new colour table size is invalid
-		void assertInvalidNewColourTableSize() const;
+		void assertInvalidNewClrTableSize() const;
 
 		/// Outputs an error message if the out of range index is tried
-		void assertColourTableIndexOutOfRange() const;
+		void assertClrTableIndexOutOfRange() const;
 
 		/**
 		 * \brief Modify the colour table.

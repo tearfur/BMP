@@ -14,42 +14,33 @@ BMP_8bit::BMP_8bit(const std::string& filename): BMP_CT(filename) {
 	}
 
 	// Ensure the colour table is valid
-//	const uint32_t colourTableSize = fileHeader.bfOffBits - sizeof(fileHeader) - infoHeader.biSize;
-//	if (!validColourTableSize(colourTableSize) || colourTableSize > 4u << 8u) {
+//	const uint32_t colourTableSize = fileHeader.bfOffBits - fileHeaderSize - infoHeader.biSize;
+//	if (!validClrTableSize(colourTableSize) || colourTableSize > 4u << 8u) {
 //		std::cerr << "BMP_8bit: Invalid colour table." << std::endl;
 //		std::exit(1);
 //	}
 
 	std::ifstream f(filename, std::ios::binary);
-	f.seekg(sizeof(fileHeader) + infoHeader.biSize); // Seek to colour table
+	f.seekg(fileHeaderSize + infoHeader.biSize); // Seek to colour table
 
 	// Read colour table.
-	const uint32_t colourTableSize = 1u << infoHeader.biBitCount << 2u;
-	colourTable.resize(colourTableSize);
-	f.read(reinterpret_cast<char*>(&colourTable[0]), colourTableSize);
+	readClrTable(f);
 
 	f.seekg(fileHeader.bfOffBits); // Seek to the start of image array
 
 	const std::size_t& padSize = getRowSize() - infoHeader.biWidth; // Size of padding on each row in bytes
 
 	//Read image data into img
+	img.resize(infoHeader.biWidth * std::abs(infoHeader.biHeight));
 	if (infoHeader.biHeight < 0) {
-		img.resize(infoHeader.biWidth * -infoHeader.biHeight);
-
 		for (std::size_t y = 0; y < -infoHeader.biHeight; ++y) {
-			for (std::size_t x = 0; x < infoHeader.biWidth; ++x) {
-				operator()(x, y) = f.get();
-			}
+			f.read(reinterpret_cast<char*>(&operator()(0, y)), infoHeader.biWidth);
 
 			f.seekg(padSize, std::ios::cur);
 		}
 	} else {
-		img.resize(infoHeader.biWidth * infoHeader.biHeight);
-
 		for (std::size_t y = infoHeader.biHeight - 1; y < infoHeader.biHeight; --y) {
-			for (std::size_t x = 0; x < infoHeader.biWidth; ++x) {
-				operator()(x, y) = f.get();
-			}
+			f.read(reinterpret_cast<char*>(&operator()(0, y)), infoHeader.biWidth);
 
 			f.seekg(padSize, std::ios::cur);
 		}
@@ -62,7 +53,7 @@ BMP_8bit::BMP_8bit(const int32_t& w, const int32_t& h, const uint8_t& background
 	// Fill in header values
 	infoHeader.biBitCount = 8;
 	infoHeader.biClrUsed = 1u << infoHeader.biBitCount;
-	fileHeader.bfOffBits = sizeof(fileHeader) + infoHeader.biSize + (infoHeader.biClrUsed << 2u);
+	fileHeader.bfOffBits = fileHeaderSize + infoHeader.biSize + (infoHeader.biClrUsed << 2u);
 	infoHeader.biSizeImage = getRowSize() * std::abs(h);
 	fileHeader.bfSize = fileHeader.bfOffBits + infoHeader.biSizeImage;
 
@@ -92,17 +83,13 @@ bool BMP_8bit::save(const std::string& filename) const {
 	// Write image data
 	if (infoHeader.biHeight < 0) {
 		for (std::size_t y = 0; y < -infoHeader.biHeight; ++y) {
-			for (std::size_t x = 0; x < infoHeader.biWidth; ++x) {
-				f.write(reinterpret_cast<const char*>(&operator()(x, y)), sizeof(uint8_t));
-			}
+			f.write(reinterpret_cast<const char*>(&operator()(0, y)), infoHeader.biWidth);
 
 			for (std::size_t i = 0; i < padSize; ++i) f.put(0);
-		}
+		}//Expand vector to required size
 	} else {
 		for (std::size_t y = infoHeader.biHeight - 1; y < infoHeader.biHeight; --y) {
-			for (std::size_t x = 0; x < infoHeader.biWidth; ++x) {
-				f.write(reinterpret_cast<const char*>(&operator()(x, y)), sizeof(uint8_t));
-			}
+			f.write(reinterpret_cast<const char*>(&operator()(0, y)), infoHeader.biWidth);
 
 			for (std::size_t i = 0; i < padSize; ++i) f.put(0);
 		}
@@ -113,26 +100,22 @@ bool BMP_8bit::save(const std::string& filename) const {
 }
 
 uint8_t& BMP_8bit::operator[](const std::size_t& index) {
-	if (!validIndex(index)) {
-		assertInvalidIndex();
-		std::exit(1);
-	}
+	assertInvalidIndex(index);
+
 	return img[index];
 }
 
 const uint8_t& BMP_8bit::operator[](const std::size_t& index) const {
-	if (!validIndex(index)) {
-		assertInvalidIndex();
-		std::exit(1);
-	}
+	assertInvalidIndex(index);
+
 	return img[index];
 }
 
-uint8_t& BMP_8bit::operator()(const uint32_t& x, const uint32_t& y) {
+uint8_t& BMP_8bit::operator()(const int32_t& x, const int32_t& y) {
 	return img[getIndex(x, y)];
 }
 
-const uint8_t& BMP_8bit::operator()(const uint32_t& x, const uint32_t& y) const {
+const uint8_t& BMP_8bit::operator()(const int32_t& x, const int32_t& y) const {
 	return img[getIndex(x, y)];
 }
 

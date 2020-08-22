@@ -12,6 +12,12 @@ BMP_CT::BMP_CT(const std::string& filename): BMP(filename) {
 
 BMP_CT::BMP_CT(const int32_t& w, const int32_t& h): BMP(w, h) {}
 
+void BMP_CT::readClrTable(std::ifstream& f) {
+	const uint32_t colourTableSize = 1u << infoHeader.biBitCount << 2u;
+	colourTable.resize(colourTableSize);
+	f.read(reinterpret_cast<char*>(&colourTable[0]), colourTableSize);
+}
+
 bool BMP_CT::save(std::ofstream& f) const {
 	if (!BMP::save(f)) return false;
 
@@ -26,31 +32,31 @@ bool BMP_CT::save(std::ofstream& f) const {
 	return true;
 }
 
-bool BMP_CT::validColourTableSize(const uint32_t& size) const {
+bool BMP_CT::validClrTableSize(const uint32_t& size) const {
 	return !(size % 4) && ((infoHeader.biClrUsed && size / 4 == infoHeader.biClrUsed) ||
 			(!infoHeader.biClrUsed && size / 4 == 1u << infoHeader.biBitCount));
 }
 
-bool BMP_CT::validNewColourTableSize(const uint32_t& size) const {
+bool BMP_CT::validNewClrTableSize(const uint32_t& size) const {
 	return size <= 4u << infoHeader.biBitCount && !(size % 4);
 }
 
-void BMP_CT::assertInvalidColourTableSize() const {
+void BMP_CT::assertInvalidClrTableSize() const {
 	std::cerr << "BMP_CT: Array size does not match number of colours." << std::endl;
 }
 
-void BMP_CT::assertInvalidNewColourTableSize() const {
+void BMP_CT::assertInvalidNewClrTableSize() const {
 	std::cerr << "BMP_CT: New colour table size too large or is not a multiple of 4." << std::endl;
 }
 
-void BMP_CT::assertColourTableIndexOutOfRange() const {
+void BMP_CT::assertClrTableIndexOutOfRange() const {
 	std::cerr << "BMP_CT: Colour table index out of range, nothing was done." << std::endl;
 }
 
 void BMP_CT::setColourTable(const uint32_t& index, const uint8_t& r, const uint8_t& g, const uint8_t& b) {
 	const uint16_t offset = 4 * index;
 	if (index >= colourTable.size()) {
-		assertColourTableIndexOutOfRange();
+		assertClrTableIndexOutOfRange();
 		return;
 	}
 
@@ -60,8 +66,8 @@ void BMP_CT::setColourTable(const uint32_t& index, const uint8_t& r, const uint8
 }
 
 bool BMP_CT::setColourTable(const std::vector<uint8_t>& table) {
-	if (!validNewColourTableSize(table.size())) {
-		assertInvalidNewColourTableSize();
+	if (!validNewClrTableSize(table.size())) {
+		assertInvalidNewClrTableSize();
 		return false;
 	}
 
@@ -78,7 +84,7 @@ std::vector<uint8_t> BMP_CT::getColourTable() const {
 void BMP_CT::getColourTable(const uint32_t& index, uint8_t& r, uint8_t& g, uint8_t& b) const {
 	const uint8_t offset = 4 * index;
 	if (offset + 3 >= colourTable.size()) {
-		assertColourTableIndexOutOfRange();
+		assertClrTableIndexOutOfRange();
 		return;
 	}
 
