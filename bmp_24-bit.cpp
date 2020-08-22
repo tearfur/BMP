@@ -43,13 +43,10 @@ BMP_24bit::BMP_24bit(const int32_t& w, const int32_t& h, const uint32_t& backgro
 	fileHeader.bfOffBits = fileHeaderSize + infoHeader.biSize;
 	infoHeader.biSizeImage = getRowSize() * std::abs(h);
 	fileHeader.bfSize = fileHeader.bfOffBits + infoHeader.biSizeImage;
-
-	// TODO: Change when written whole pixel modification function
+	
 	for (uint32_t y = 0; y < std::abs(h); ++y) {
 		for (uint32_t x = 0; x < w; ++x) {
-			red(x, y) = background >> 16u;
-			green(x, y) = background >> 8u;
-			blue(x, y) = background;
+			setPixel(x, y, background);
 		}
 	}
 }
