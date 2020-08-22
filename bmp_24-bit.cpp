@@ -1,7 +1,3 @@
-//
-// Created by HoYuYat on 8/11/2019.
-//
-
 #include "bmp_24-bit.h"
 #include <iostream>
 #include <cstddef>

@@ -1,7 +1,3 @@
-//
-// Created by HoYuYat on 8/11/2019.
-//
-
 #ifndef BMP_BMP_8_BIT_H
 #define BMP_BMP_8_BIT_H
 

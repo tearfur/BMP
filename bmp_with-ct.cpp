@@ -1,7 +1,3 @@
-//
-// Created by HoYuYat on 8/11/2019.
-//
-
 #include "bmp_with-ct.h"
 #include "bmp.h"
 #include <iostream>

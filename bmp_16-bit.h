@@ -1,7 +1,4 @@
-#ifndef BMP_BMP_16_BIT_H//
-// Created by HoYuYat on 8/11/2019.
-//
-
+#ifndef BMP_BMP_16_BIT_H
 #define BMP_BMP_16_BIT_H
 
 #include "bmp_with-bm.h"

@@ -1,7 +1,3 @@
-//
-// Created by HoYuYat on 8/11/2019.
-//
-
 #include "bmp_8-bit.h"
 #include <cstdlib>
 #include <iostream>
