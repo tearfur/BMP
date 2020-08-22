@@ -3,9 +3,6 @@
 #include <cstddef>
 #include <cstdlib>
 
-		/// Size in bytes for 1 pixel
-		static const uint8_t pixel_size = 3;
-
 BMP_1bit::BMP_1bit(const std::string& filename): BMP_CT(filename) {
 	if (infoHeader.biBitCount != 1) {
 		std::cerr << "BMP_1bit: This is not a 1-bit BMP file." << std::endl;
