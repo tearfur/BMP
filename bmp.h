@@ -10,11 +10,16 @@
  * \mainpage Yat's BMP Library
  *
  * A couple of header files that reads and writes uncompressed 1-bit, 8-bit, 16-bit, 24-bit, and 32-bit BMPv3 files.
- * BMP with bit-masks are supported.
+ * Code for BMP with bit-masks are written, but not yet tested.
  *
  * It only supports the "BM" format.
  *
  * Written for GNU C++11.
+ *
+ * Tested bit-depths:
+ * - 1-bit
+ * - 8-bit
+ * - 24-bit
  */
 
 /**
