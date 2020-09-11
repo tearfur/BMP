@@ -24,14 +24,14 @@ BMP_1bit::BMP_1bit(const std::string& filename): BMP_CT(filename) {
 
 	f.seekg(fileHeader.bfOffBits); // Seek to the start of image array
 
-	const std::size_t& padSize = getRowSize() - (infoHeader.biWidth + 7) / 8; // Size of padding on each row in bytes
+	const size_t& padSize = getRowSize() - (infoHeader.biWidth + 7) / 8; // Size of padding on each row in bytes
 
 	// Read image data into img
 	uint8_t buf = 0; // For storing each byte read
 	img.resize(infoHeader.biWidth * std::abs(infoHeader.biHeight));
 	if (infoHeader.biHeight < 0) { // Check if height is positive or negative
-		for (std::size_t y = 0; y < -infoHeader.biHeight; ++y) {
-			for (std::size_t x = 0; x < infoHeader.biWidth; ++x) {
+		for (size_t y = 0; y < -infoHeader.biHeight; ++y) {
+			for (size_t x = 0; x < infoHeader.biWidth; ++x) {
 				// If divisible by 8, read the new byte (8-bits in 1 byte)
 				const uint8_t& remainder = x % 8;
 				if (!remainder)
@@ -43,8 +43,8 @@ BMP_1bit::BMP_1bit(const std::string& filename): BMP_CT(filename) {
 			f.seekg(padSize, std::ios::cur); // Skip pad bytes
 		}
 	} else {
-		for (std::size_t y = infoHeader.biHeight - 1; y < infoHeader.biHeight; --y) {
-			for (std::size_t x = 0; x < infoHeader.biWidth; ++x) {
+		for (size_t y = infoHeader.biHeight - 1; y < infoHeader.biHeight; --y) {
+			for (size_t x = 0; x < infoHeader.biWidth; ++x) {
 				// If divisible by 8, read the new byte (8-bits in 1 byte)
 				const uint8_t& remainder = x % 8;
 				if (!remainder)
@@ -86,13 +86,13 @@ bool BMP_1bit::save(const std::string& filename) const {
 	// Seek to offset
 	f.seekp(fileHeader.bfOffBits);
 
-	const std::size_t& padSize = getRowSize() - (infoHeader.biWidth + 7) / 8; // Size of padding on each row in bytes
+	const size_t& padSize = getRowSize() - (infoHeader.biWidth + 7) / 8; // Size of padding on each row in bytes
 
 	// Write image data
 	uint8_t buf = 0; // Buffer for storing each byte
 	if (infoHeader.biHeight < 0) {
-		for (std::size_t y = 0; y < -infoHeader.biHeight; ++y) {
-			for (std::size_t x = 0; x < infoHeader.biWidth; ++x) {
+		for (size_t y = 0; y < -infoHeader.biHeight; ++y) {
+			for (size_t x = 0; x < infoHeader.biWidth; ++x) {
 				const uint8_t remainder = x % 8;
 				if (!remainder) buf = 0;
 
@@ -102,11 +102,11 @@ bool BMP_1bit::save(const std::string& filename) const {
 				if (remainder == 7 || x == infoHeader.biWidth - 1) f.write(reinterpret_cast<char*>(&buf), sizeof(buf));
 			}
 
-			for (std::size_t i = 0; i < padSize; ++i) f.put(0); // Skip padding
+			for (size_t i = 0; i < padSize; ++i) f.put(0); // Skip padding
 		}
 	} else {
-		for (std::size_t y = infoHeader.biHeight - 1; y < infoHeader.biHeight; --y) {
-			for (std::size_t x = 0; x < infoHeader.biWidth; ++x) {
+		for (size_t y = infoHeader.biHeight - 1; y < infoHeader.biHeight; --y) {
+			for (size_t x = 0; x < infoHeader.biWidth; ++x) {
 				const uint8_t remainder = x % 8;
 				if (!remainder) buf = 0;
 
@@ -116,7 +116,7 @@ bool BMP_1bit::save(const std::string& filename) const {
 				if (remainder == 7 || x == infoHeader.biWidth - 1) f.write(reinterpret_cast<char*>(&buf), sizeof(buf));
 			}
 
-			for (std::size_t i = 0; i < padSize; ++i) f.put(0); // Skip padding
+			for (size_t i = 0; i < padSize; ++i) f.put(0); // Skip padding
 		}
 	}
 
@@ -124,13 +124,13 @@ bool BMP_1bit::save(const std::string& filename) const {
 	return true;
 }
 
-uint8_t& BMP_1bit::operator[](const std::size_t& index) {
+uint8_t& BMP_1bit::operator[](const size_t& index) {
 	assertInvalidIndex(index);
 
 	return img[index];
 }
 
-const uint8_t& BMP_1bit::operator[](const std::size_t& index) const {
+const uint8_t& BMP_1bit::operator[](const size_t& index) const {
 	assertInvalidIndex(index);
 
 	return img[index];

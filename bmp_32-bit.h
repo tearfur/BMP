@@ -50,8 +50,8 @@ class BMP_32bit: public BMP_BM {
 		 * @param index[in] img[index]
 		 * @return Reference to the element
 		 */
-		uint32_t& operator[](const std::size_t& index);
-		const uint32_t& operator[](const std::size_t& index) const;
+		uint32_t& operator[](const size_t& index);
+		const uint32_t& operator[](const size_t& index) const;
 		///@}
 
 		///@{

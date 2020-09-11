@@ -46,8 +46,8 @@ class BMP_8bit: public BMP_CT {
 		 * @param index[in] img[index]
 		 * @return Reference to the element
 		 */
-		uint8_t& operator[](const std::size_t& index);
-		const uint8_t& operator[](const std::size_t& index) const;
+		uint8_t& operator[](const size_t& index);
+		const uint8_t& operator[](const size_t& index) const;
 		///@}
 
 		///@{

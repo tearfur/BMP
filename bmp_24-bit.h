@@ -43,10 +43,10 @@ class BMP_24bit: public BMP {
 		 *
 		 * \brief Pixel accessors function.
 		 */
-		void setPixel(const std::size_t& index, const uint32_t& colour);
+		void setPixel(const size_t& index, const uint32_t& colour);
 		void setPixel(const int32_t& x, const int32_t& y, const uint32_t& colour);
 
-		uint32_t getPixel(const std::size_t& index) const;
+		uint32_t getPixel(const size_t& index) const;
 		uint32_t getPixel(const int32_t& x, const int32_t& y) const;
 		///@}
 
@@ -55,20 +55,20 @@ class BMP_24bit: public BMP {
 		 *
 		 * \brief Pixel access for specific colours
 		 */
-		uint8_t& red(const std::size_t& index);
-		const uint8_t& red(const std::size_t& index) const;
+		uint8_t& red(const size_t& index);
+		const uint8_t& red(const size_t& index) const;
 
 		uint8_t& red(const uint32_t& x, const uint32_t& y);
 		const uint8_t& red(const uint32_t& x, const uint32_t& y) const;
 
-		uint8_t& green(const std::size_t& index);
-		const uint8_t& green(const std::size_t& index) const;
+		uint8_t& green(const size_t& index);
+		const uint8_t& green(const size_t& index) const;
 
 		uint8_t& green(const uint32_t& x, const uint32_t& y);
 		const uint8_t& green(const uint32_t& x, const uint32_t& y) const;
 
-		uint8_t& blue(const std::size_t& index);
-		const uint8_t& blue(const std::size_t& index) const;
+		uint8_t& blue(const size_t& index);
+		const uint8_t& blue(const size_t& index) const;
 
 		uint8_t& blue(const uint32_t& x, const uint32_t& y);
 		const uint8_t& blue(const uint32_t& x, const uint32_t& y) const;
@@ -86,15 +86,15 @@ class BMP_24bit: public BMP {
 		 *
 		 * \brief Internal index functions
 		 */
-		std::size_t getInternalIndex(const std::size_t& index) const;
-		std::size_t getInternalRedIndex(const std::size_t& index) const;
-		std::size_t getInternalGreenIndex(const std::size_t& index) const;
-		std::size_t getInternalBlueIndex(const std::size_t& index) const;
+		size_t getInternalIndex(const size_t& index) const;
+		size_t getInternalRedIndex(const size_t& index) const;
+		size_t getInternalGreenIndex(const size_t& index) const;
+		size_t getInternalBlueIndex(const size_t& index) const;
 
-		std::size_t getInternalIndex(const int32_t& x, const int32_t& y) const;
-		std::size_t getInternalRedIndex(const int32_t& x, const int32_t& y) const;
-		std::size_t getInternalGreenIndex(const int32_t& x, const int32_t& y) const;
-		std::size_t getInternalBlueIndex(const int32_t& x, const int32_t& y) const;
+		size_t getInternalIndex(const int32_t& x, const int32_t& y) const;
+		size_t getInternalRedIndex(const int32_t& x, const int32_t& y) const;
+		size_t getInternalGreenIndex(const int32_t& x, const int32_t& y) const;
+		size_t getInternalBlueIndex(const int32_t& x, const int32_t& y) const;
 		///@}
 };
 

@@ -12,19 +12,19 @@ BMP_24bit::BMP_24bit(const std::string& filename): BMP(filename) {
 
 	f.seekg(fileHeader.bfOffBits); // Seek to pixel array
 
-	const std::size_t& padSize = getRowSize() - infoHeader.biWidth * pixel_size; // Size of padding on each row in bytes
+	const size_t& padSize = getRowSize() - infoHeader.biWidth * pixel_size; // Size of padding on each row in bytes
 
 	//Read image data into img
 	img.resize(infoHeader.biWidth * std::abs(infoHeader.biHeight) * pixel_size);
 	if (infoHeader.biHeight < 0) {
-		for (std::size_t y = 0; y < -infoHeader.biHeight; ++y) {
+		for (size_t y = 0; y < -infoHeader.biHeight; ++y) {
 			// Read row
 			f.read(reinterpret_cast<char*>(&img[getInternalIndex(0, y)]), pixel_size * infoHeader.biWidth);
 
 			f.seekg(padSize, std::ios::cur);
 		}
 	} else {
-		for (std::size_t y = infoHeader.biHeight - 1; y < infoHeader.biHeight; --y) {
+		for (size_t y = infoHeader.biHeight - 1; y < infoHeader.biHeight; --y) {
 			// Read row
 			f.read(reinterpret_cast<char*>(&img[getInternalIndex(0, y)]), pixel_size * infoHeader.biWidth);
 
@@ -43,7 +43,7 @@ BMP_24bit::BMP_24bit(const int32_t& w, const int32_t& h, const uint32_t& backgro
 	fileHeader.bfOffBits = fileHeaderSize + infoHeader.biSize;
 	infoHeader.biSizeImage = getRowSize() * std::abs(h);
 	fileHeader.bfSize = fileHeader.bfOffBits + infoHeader.biSizeImage;
-	
+
 	for (uint32_t y = 0; y < std::abs(h); ++y) {
 		for (uint32_t x = 0; x < w; ++x) {
 			setPixel(x, y, background);
@@ -62,22 +62,22 @@ bool BMP_24bit::save(const std::string& filename) const {
 
 	f.seekp(fileHeader.bfOffBits); // Seek to pixel array
 
-	const std::size_t& padSize = getRowSize() - infoHeader.biWidth * pixel_size; // Size of padding on each row in bytes
+	const size_t& padSize = getRowSize() - infoHeader.biWidth * pixel_size; // Size of padding on each row in bytes
 
 	// Write image data
 	if (infoHeader.biHeight < 0) {
-		for (std::size_t y = 0; y < -infoHeader.biHeight; ++y) {
+		for (size_t y = 0; y < -infoHeader.biHeight; ++y) {
 			// Write row
 			f.write(reinterpret_cast<const char*>(&img[getInternalIndex(0, y)]), pixel_size * infoHeader.biWidth);
 
-			for (std::size_t i = 0; i < padSize; ++i) f.put(0);
+			for (size_t i = 0; i < padSize; ++i) f.put(0);
 		}
 	} else {
-		for (std::size_t y = infoHeader.biHeight - 1; y < infoHeader.biHeight; --y) {
+		for (size_t y = infoHeader.biHeight - 1; y < infoHeader.biHeight; --y) {
 			// Write row
 			f.write(reinterpret_cast<const char*>(&img[getInternalIndex(0, y)]), pixel_size * infoHeader.biWidth);
 
-			for (std::size_t i = 0; i < padSize; ++i) f.put(0);
+			for (size_t i = 0; i < padSize; ++i) f.put(0);
 		}
 	}
 
@@ -85,7 +85,7 @@ bool BMP_24bit::save(const std::string& filename) const {
 	return true;
 }
 
-void BMP_24bit::setPixel(const std::size_t& index, const uint32_t& colour) {
+void BMP_24bit::setPixel(const size_t& index, const uint32_t& colour) {
 	red(index) = colour >> 16u;
 	green(index) = colour >> 8u;
 	blue(index) = colour;
@@ -97,7 +97,7 @@ void BMP_24bit::setPixel(const int32_t& x, const int32_t& y, const uint32_t& col
 	blue(x, y) = colour;
 }
 
-uint32_t BMP_24bit::getPixel(const std::size_t& index) const {
+uint32_t BMP_24bit::getPixel(const size_t& index) const {
 	return (red(index) << 16u) + (green(index) << 8u) + blue(index);
 }
 
@@ -105,11 +105,11 @@ uint32_t BMP_24bit::getPixel(const int32_t& x, const int32_t& y) const {
 	return (red(x, y) << 16u) + (green(x, y) << 8u) + blue(x, y);
 }
 
-uint8_t& BMP_24bit::red(const std::size_t& index) {
+uint8_t& BMP_24bit::red(const size_t& index) {
 	return img[getInternalRedIndex(index)];
 }
 
-const uint8_t& BMP_24bit::red(const std::size_t& index) const {
+const uint8_t& BMP_24bit::red(const size_t& index) const {
 	return img[getInternalRedIndex(index)];
 }
 
@@ -121,11 +121,11 @@ const uint8_t& BMP_24bit::red(const uint32_t& x, const uint32_t& y) const {
 	return img[getInternalRedIndex(x, y)];
 }
 
-uint8_t& BMP_24bit::green(const std::size_t& index) {
+uint8_t& BMP_24bit::green(const size_t& index) {
 	return img[getInternalGreenIndex(index)];
 }
 
-const uint8_t& BMP_24bit::green(const std::size_t& index) const {
+const uint8_t& BMP_24bit::green(const size_t& index) const {
 	return img[getInternalGreenIndex(index)];
 }
 
@@ -137,11 +137,11 @@ const uint8_t& BMP_24bit::green(const uint32_t& x, const uint32_t& y) const {
 	return img[getInternalGreenIndex(x, y)];
 }
 
-uint8_t& BMP_24bit::blue(const std::size_t& index) {
+uint8_t& BMP_24bit::blue(const size_t& index) {
 	return img[getInternalBlueIndex(index)];
 }
 
-const uint8_t& BMP_24bit::blue(const std::size_t& index) const {
+const uint8_t& BMP_24bit::blue(const size_t& index) const {
 	return img[getInternalBlueIndex(index)];
 }
 
@@ -153,37 +153,37 @@ const uint8_t& BMP_24bit::blue(const uint32_t & x, const uint32_t & y) const {
 	return img[getInternalBlueIndex(x, y)];
 }
 
-std::size_t BMP_24bit::getInternalIndex(const std::size_t& index) const {
+size_t BMP_24bit::getInternalIndex(const size_t& index) const {
 	assertInvalidIndex(index);
 
 	return index * pixel_size;
 }
 
-std::size_t BMP_24bit::getInternalRedIndex(const std::size_t& index) const {
+size_t BMP_24bit::getInternalRedIndex(const size_t& index) const {
 	return getInternalIndex(index) + 2;
 }
 
-std::size_t BMP_24bit::getInternalGreenIndex(const std::size_t& index) const {
+size_t BMP_24bit::getInternalGreenIndex(const size_t& index) const {
 	return getInternalIndex(index) + 1;
 }
 
-std::size_t BMP_24bit::getInternalBlueIndex(const std::size_t& index) const {
+size_t BMP_24bit::getInternalBlueIndex(const size_t& index) const {
 	return getInternalIndex(index);
 }
 
-std::size_t BMP_24bit::getInternalIndex(const int32_t& x, const int32_t& y) const {
+size_t BMP_24bit::getInternalIndex(const int32_t& x, const int32_t& y) const {
 	return getIndex(x, y) * pixel_size;
 }
 
-std::size_t BMP_24bit::getInternalRedIndex(const int32_t& x, const int32_t& y) const {
+size_t BMP_24bit::getInternalRedIndex(const int32_t& x, const int32_t& y) const {
 	return getInternalIndex(x, y) + 2;
 }
 
-std::size_t BMP_24bit::getInternalGreenIndex(const int32_t& x, const int32_t& y) const {
+size_t BMP_24bit::getInternalGreenIndex(const int32_t& x, const int32_t& y) const {
 	return getInternalIndex(x, y) + 1;
 }
 
-std::size_t BMP_24bit::getInternalBlueIndex(const int32_t& x, const int32_t& y) const {
+size_t BMP_24bit::getInternalBlueIndex(const int32_t& x, const int32_t& y) const {
 	return getInternalIndex(x, y);
 }
 

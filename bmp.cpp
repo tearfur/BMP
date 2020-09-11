@@ -58,7 +58,7 @@ BMP::BMP(const int32_t& w, const int32_t& h): BMP() {
 	infoHeader.biHeight = h;
 }
 
-std::size_t BMP::getRowSize() const {
+size_t BMP::getRowSize() const {
 	return (infoHeader.biBitCount * infoHeader.biWidth + 31) / 32 * 4;
 }
 
@@ -91,13 +91,13 @@ bool BMP::save(std::ofstream& f) const {
 	return true;
 }
 
-std::size_t BMP::getIndex(const int32_t& x, const int32_t& y) const {
+size_t BMP::getIndex(const int32_t& x, const int32_t& y) const {
 	assertInvalidIndex(x, y);
 
 	return y * infoHeader.biWidth + x;
 }
 
-bool BMP::validIndex(const std::size_t& index) const {
+bool BMP::validIndex(const size_t& index) const {
 	return index < infoHeader.biWidth * std::abs(infoHeader.biHeight);
 }
 
@@ -105,7 +105,7 @@ bool BMP::validIndex(const int32_t& x, const int32_t& y) const {
 	return x >= 0 && x < infoHeader.biWidth && y >= 0 && y < std::abs(infoHeader.biHeight);
 }
 
-void BMP::assertInvalidIndex(const std::size_t& index) const {
+void BMP::assertInvalidIndex(const size_t& index) const {
 	if (!validIndex(index)) {
 		assertInvalidIndex();
 		std::exit(1);

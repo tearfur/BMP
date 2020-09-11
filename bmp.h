@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <cstddef>
+#include <climits>
 #include <string>
 #include <fstream>
 
@@ -45,19 +46,19 @@ class BMP {
 		BMP(const int32_t& w, const int32_t& h);
 
 		/// To get the size in bytes for each row in memory.
-		std::size_t getRowSize() const;
+		size_t getRowSize() const;
 
 		/// Performs all the common functions for save.
 		bool save(std::ofstream& f) const;
 
 		/// Returns the index for a certain x, y.
-		std::size_t getIndex(const int32_t& x, const int32_t& y) const;
+		size_t getIndex(const int32_t& x, const int32_t& y) const;
 
 		/**
 		 * @{
 		 * @brief Assert: Invalid img index
 		 */
-		void assertInvalidIndex(const std::size_t& index) const;
+		void assertInvalidIndex(const size_t& index) const;
 		void assertInvalidIndex(const int32_t& x, const int32_t& y) const;
 		///@}
 
@@ -85,7 +86,7 @@ class BMP {
 			uint32_t bfOffBits;
 		};
 
-		static const std::size_t fileHeaderSize = (16 + 32 + 16 + 16 + 32) / 8;
+		static const size_t fileHeaderSize = (16 + 32 + 16 + 16 + 32) / CHAR_BIT;
 
 		struct InfoHeader {
 			uint32_t biSize;
@@ -124,7 +125,7 @@ class BMP {
 
 		///@{
 		/// Check for valid img index
-		bool validIndex(const std::size_t& index) const;
+		bool validIndex(const size_t& index) const;
 		bool validIndex(const int32_t& x, const int32_t& y) const;
 		///@}
 };
