@@ -101,10 +101,10 @@ const uint32_t& BMP_32bit::operator[](const size_t& index) const {
 	return img[index];
 }
 
-uint32_t& BMP_32bit::operator()(const uint32_t& x, const uint32_t& y) {
+uint32_t& BMP_32bit::operator()(const int32_t& x, const int32_t& y) {
 	return img[getIndex(x, y)];
 }
 
-const uint32_t& BMP_32bit::operator()(const uint32_t& x, const uint32_t& y) const {
+const uint32_t& BMP_32bit::operator()(const int32_t& x, const int32_t& y) const {
 	return img[getIndex(x, y)];
 }

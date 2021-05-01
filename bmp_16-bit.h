@@ -66,8 +66,8 @@ class BMP_16bit: public BMP_BM {
 		 * @param y[in] y
 		 * @return Reference to the element
 		 */
-		uint16_t& operator()(const uint32_t& x, const uint32_t& y);
-		const uint16_t& operator()(const uint32_t& x, const uint32_t& y) const;
+		uint16_t& operator()(const int32_t& x, const int32_t& y);
+		const uint16_t& operator()(const int32_t& x, const int32_t& y) const;
 		///@}
 
 		/**

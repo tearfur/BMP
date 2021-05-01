@@ -44,8 +44,8 @@ BMP_24bit::BMP_24bit(const int32_t& w, const int32_t& h, const uint32_t& backgro
 	infoHeader.biSizeImage = getRowSize() * std::abs(h);
 	fileHeader.bfSize = fileHeader.bfOffBits + infoHeader.biSizeImage;
 
-	for (uint32_t y = 0; y < std::abs(h); ++y) {
-		for (uint32_t x = 0; x < w; ++x) {
+	for (int32_t y = 0; y < std::abs(h); ++y) {
+		for (int32_t x = 0; x < w; ++x) {
 			setPixel(x, y, background);
 		}
 	}
@@ -113,11 +113,11 @@ const uint8_t& BMP_24bit::red(const size_t& index) const {
 	return img[getInternalRedIndex(index)];
 }
 
-uint8_t& BMP_24bit::red(const uint32_t& x, const uint32_t& y) {
+uint8_t& BMP_24bit::red(const int32_t &x, const int32_t &y) {
 	return img[getInternalRedIndex(x, y)];
 }
 
-const uint8_t& BMP_24bit::red(const uint32_t& x, const uint32_t& y) const {
+const uint8_t& BMP_24bit::red(const int32_t &x, const int32_t &y) const {
 	return img[getInternalRedIndex(x, y)];
 }
 
@@ -129,11 +129,11 @@ const uint8_t& BMP_24bit::green(const size_t& index) const {
 	return img[getInternalGreenIndex(index)];
 }
 
-uint8_t& BMP_24bit::green(const uint32_t& x, const uint32_t& y) {
+uint8_t& BMP_24bit::green(const int32_t &x, const int32_t &y) {
 	return img[getInternalGreenIndex(x, y)];
 }
 
-const uint8_t& BMP_24bit::green(const uint32_t& x, const uint32_t& y) const {
+const uint8_t& BMP_24bit::green(const int32_t &x, const int32_t &y) const {
 	return img[getInternalGreenIndex(x, y)];
 }
 
@@ -145,11 +145,11 @@ const uint8_t& BMP_24bit::blue(const size_t& index) const {
 	return img[getInternalBlueIndex(index)];
 }
 
-uint8_t& BMP_24bit::blue(const uint32_t& x, const uint32_t& y) {
+uint8_t& BMP_24bit::blue(const int32_t &x, const int32_t &y) {
 	return img[getInternalBlueIndex(x, y)];
 }
 
-const uint8_t& BMP_24bit::blue(const uint32_t & x, const uint32_t & y) const {
+const uint8_t& BMP_24bit::blue(const int32_t &x, const int32_t &y) const {
 	return img[getInternalBlueIndex(x, y)];
 }
 

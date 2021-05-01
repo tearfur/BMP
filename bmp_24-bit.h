@@ -58,20 +58,20 @@ class BMP_24bit: public BMP {
 		uint8_t& red(const size_t& index);
 		const uint8_t& red(const size_t& index) const;
 
-		uint8_t& red(const uint32_t& x, const uint32_t& y);
-		const uint8_t& red(const uint32_t& x, const uint32_t& y) const;
+		uint8_t& red(const int32_t &x, const int32_t &y);
+		const uint8_t& red(const int32_t &x, const int32_t &y) const;
 
 		uint8_t& green(const size_t& index);
 		const uint8_t& green(const size_t& index) const;
 
-		uint8_t& green(const uint32_t& x, const uint32_t& y);
-		const uint8_t& green(const uint32_t& x, const uint32_t& y) const;
+		uint8_t& green(const int32_t &x, const int32_t &y);
+		const uint8_t& green(const int32_t &x, const int32_t &y) const;
 
 		uint8_t& blue(const size_t& index);
 		const uint8_t& blue(const size_t& index) const;
 
-		uint8_t& blue(const uint32_t& x, const uint32_t& y);
-		const uint8_t& blue(const uint32_t& x, const uint32_t& y) const;
+		uint8_t& blue(const int32_t &x, const int32_t &y);
+		const uint8_t& blue(const int32_t &x, const int32_t &y) const;
 		///@}
 
 		/// Size in bytes for 1 pixel

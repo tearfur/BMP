@@ -103,10 +103,10 @@ const uint16_t& BMP_16bit::operator[](const size_t& index) const {
 	return img[index];
 }
 
-uint16_t& BMP_16bit::operator()(const uint32_t& x, const uint32_t& y) {
+uint16_t& BMP_16bit::operator()(const int32_t& x, const int32_t& y) {
 	return img[getIndex(x, y)];
 }
 
-const uint16_t& BMP_16bit::operator()(const uint32_t& x, const uint32_t& y) const {
+const uint16_t& BMP_16bit::operator()(const int32_t& x, const int32_t& y) const {
 	return img[getIndex(x, y)];
 }
