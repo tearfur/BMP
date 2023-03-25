@@ -34,13 +34,13 @@ class BMP_CT: public BMP {
 		bool validNewClrTableSize(const uint32_t& size) const;
 
 		/// Outputs an error message if the current colour table size is invalid
-		void assertInvalidClrTableSize() const;
+		static void assertInvalidClrTableSize() ;
 
 		/// Outputs an error message if new colour table size is invalid
-		void assertInvalidNewClrTableSize() const;
+		static void assertInvalidNewClrTableSize() ;
 
 		/// Outputs an error message if the out of range index is tried
-		void assertClrTableIndexOutOfRange() const;
+		static void assertClrTableIndexOutOfRange() ;
 
 		/**
 		 * \brief Modify the colour table.
